@@ -17,7 +17,8 @@ struct Deck {
             for shade in Card.Shade.all {
                 for number in Card.Number.all {
                     for color in Card.Color.all {
-                        cards.append(Card(symbol: symbol, shade: shade, number: number, color: color))
+                        cards += [Card(symbol: symbol, shade: shade, number: number, color: color)]
+//                        cards.append(Card(symbol: symbol, shade: shade, number: number, color: color))
                     }
                 }
             }

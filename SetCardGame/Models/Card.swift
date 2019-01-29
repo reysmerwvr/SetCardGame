@@ -42,9 +42,9 @@ struct Card {
     }
     
     enum Color: String {
-        case red = "#colorLiteral(red: 0.2638142705, green: 0.01383866463, blue: 0, alpha: 1)"
-        case green = "#colorLiteral(red: 0.3411764801, green: 0.6235294342, blue: 0.1686274558, alpha: 1)"
-        case blue = "#colorLiteral(red: 0.2392156869, green: 0.6745098233, blue: 0.9686274529, alpha: 1)"
+        case red = "red"
+        case green = "green"
+        case blue = "blue"
         
         static var all = [Color.red, Color.green, Color.blue]
     }

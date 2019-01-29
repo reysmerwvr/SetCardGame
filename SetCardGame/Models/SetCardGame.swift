@@ -10,14 +10,17 @@ import Foundation
 
 struct SetCardGame {
     
-    private(set) var cards: [Card] = [Card]()
+    private var deck: Deck?
+    private(set) var playingCards: [Card] = [Card]()
     
     init(numberOfCards: Int) {
         assert(numberOfCards >= 12, "SetCardGame.init(at: \(numberOfCards)): you must at least twelve cards")
+        self.deck = Deck()
         for _ in 0..<numberOfCards {
-            let card = Card()
-            cards += [card]
+            if let card = self.deck?.draw() {
+                playingCards += [card]
+            }
         }
-        cards = faceUpCards(originalArray: cards) as! [Card]
+        playingCards = faceUpCards(originalArray: playingCards) as! [Card]
     }
 }
