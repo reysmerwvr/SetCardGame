@@ -43,3 +43,10 @@ func faceUpCards (originalArray arrayToFaceUp: Array<Card>) -> Array<Any> {
     }
     return facedUpArray
 }
+
+func allEqualUsingContains<T : Equatable>(array : [T]) -> Bool {
+    if let firstElem = array.first {
+        return !array.contains { $0 != firstElem }
+    }
+    return true
+}

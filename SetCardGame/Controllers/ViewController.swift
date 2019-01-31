@@ -105,6 +105,50 @@ class ViewController: UIViewController {
         return textContent
     }
 
-
+    private func verifySet(cards: [Card]) -> Bool {
+        if cards.count > 0 {
+            var cardProperties: [String: Array<Any>] = [:]
+            for index in cards.indices {
+                let card = cards[index]
+                if let cardColor = card.color {
+                   cardProperties.append(element: cardColor,
+                                         key: "color")
+                }
+                if let cardShade = card.shade {
+                    cardProperties.append(element: cardShade,
+                                          key: "shade")
+                }
+                if let cardNumber = card.number {
+                    cardProperties.append(element: cardNumber,
+                                          key: "number")
+                }
+                if let cardSymbol = card.symbol {
+                    cardProperties.append(element: cardSymbol,
+                                          key: "symbol")
+                }
+            }
+            verifyEqualityOnProperties(cardProperties: cardProperties)
+        }
+        return false
+    }
+    
+    private func verifyEqualityOnProperties(cardProperties: Dictionary<String,
+        Array<Any>>) -> Dictionary<String, Bool> {
+        return [
+            "color" : allEqualUsingContains(array: cardProperties["color"] as! [String]),
+            "shade" : allEqualUsingContains(array: cardProperties["shade"] as! [String]),
+            "number" : allEqualUsingContains(array: cardProperties["number"] as! [Int]),
+            "symbol" : allEqualUsingContains(array: cardProperties["number"] as! [String]),
+        ]
+    }
 }
 
+extension Dictionary where Value: RangeReplaceableCollection {
+    public mutating func append(element: Value.Iterator.Element,
+                                key: Key) -> Value? {
+        var value: Value = self[key] ?? Value()
+        value.append(element)
+        self[key] = value
+        return value
+    }
+}
