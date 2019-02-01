@@ -28,6 +28,12 @@ class ViewController: UIViewController {
         drawInitialButtons()
     }
     
+    @IBAction func onTouchCard(_ sender: UIButton) {
+        if let cardNumber = cardButtons.index(of: sender) {
+            
+        }
+    }
+    
     private func drawInitialButtons() {
         for index in cardButtons.indices {
             if let cards = self.setCardGame?.playingCards {
@@ -111,23 +117,23 @@ class ViewController: UIViewController {
             for index in cards.indices {
                 let card = cards[index]
                 if let cardColor = card.color {
-                   cardProperties.append(element: cardColor,
+                   cardProperties["color"] = cardProperties.append(element: cardColor,
                                          key: "color")
                 }
                 if let cardShade = card.shade {
-                    cardProperties.append(element: cardShade,
+                    cardProperties["shade"] = cardProperties.append(element: cardShade,
                                           key: "shade")
                 }
                 if let cardNumber = card.number {
-                    cardProperties.append(element: cardNumber,
+                    cardProperties["number"] = cardProperties.append(element: cardNumber,
                                           key: "number")
                 }
                 if let cardSymbol = card.symbol {
-                    cardProperties.append(element: cardSymbol,
+                    cardProperties["symbol"] = cardProperties.append(element: cardSymbol,
                                           key: "symbol")
                 }
             }
-            verifyEqualityOnProperties(cardProperties: cardProperties)
+            let setResult: Dictionary<String, Bool> = verifyEqualityOnProperties(cardProperties: cardProperties)
         }
         return false
     }
