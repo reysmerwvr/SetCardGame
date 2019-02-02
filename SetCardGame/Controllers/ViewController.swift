@@ -28,7 +28,7 @@ class ViewController: UIViewController {
         drawInitialButtons()
     }
     
-    @IBAction func onTouchCard(_ sender: UIButton) {
+    @IBAction private func onTouchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
             
         }

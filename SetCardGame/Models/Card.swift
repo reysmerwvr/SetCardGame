@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Card {
+public struct Card {
     
     private var uuid: String
     public var isFaceUp: Bool
@@ -16,8 +16,9 @@ struct Card {
     public var shade: Shade?
     public var number: Number?
     public var color: Color?
+    public var isSelected: Bool
     
-    enum Symbol: String {
+    public enum Symbol: String {
         case triangle = "▲"
         case circle = "●"
         case square = "■"
@@ -25,7 +26,7 @@ struct Card {
         static var all = [Symbol.triangle, Symbol.circle, Symbol.square]
     }
     
-    enum Shade: String {
+    public enum Shade: String {
         case solid = "solid"
         case striped = "striped"
         case open = "open"
@@ -33,7 +34,7 @@ struct Card {
         static var all = [Shade.solid, Shade.striped, Shade.open]
     }
     
-    enum Number: Int {
+    public enum Number: Int {
         case one = 1
         case two = 2
         case three = 3
@@ -41,7 +42,7 @@ struct Card {
         static var all = [Number.one, Number.two, Number.three]
     }
     
-    enum Color: String {
+    public enum Color: String {
         case red = "red"
         case green = "green"
         case blue = "blue"
@@ -49,12 +50,13 @@ struct Card {
         static var all = [Color.red, Color.green, Color.blue]
     }
     
-    init(symbol: Symbol, shade: Shade, number: Number, color: Color) {
+    public init(symbol: Symbol, shade: Shade, number: Number, color: Color) {
         self.uuid = UUID().uuidString
         self.isFaceUp = false
         self.symbol = symbol;
         self.shade = shade;
         self.number = number;
         self.color = color;
+        self.isSelected = false
     }
 }
