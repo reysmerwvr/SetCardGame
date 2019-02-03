@@ -30,10 +30,12 @@ struct SetCardGame {
         if !card.isSelected {
             card.isSelected = true
             if selectedCards.count < 3 {
-                playingCards.append(card)
+                selectedCards.append(card)
             }
         } else {
             card.isSelected = false
+            selectedCards = selectedCards.filter({(selectedCard: Card) -> Bool in return selectedCard != card})
         }
+        playingCards[index] = card
     }
 }

@@ -30,13 +30,23 @@ class ViewController: UIViewController {
     
     @IBAction private func onTouchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
-            
+            if var setGame = self.setCardGame {
+                setGame.selectCard(at: cardNumber)
+                let selectedCards = setGame.selectedCards
+                if(selectedCards.count == 3) {
+                    verifySet(cards: selectedCards)
+                } else {
+                    selectCardAnimation(at: cardNumber)
+                }
+                
+            }
         }
     }
     
     private func drawInitialButtons() {
         for index in cardButtons.indices {
-            if let cards = self.setCardGame?.playingCards {
+            if let setGame = self.setCardGame {
+                let cards = setGame.playingCards
                 let card = cards[index]
                 if(card.isFaceUp) {
                     let attributes = getCardShadeAttributes(card: card)
@@ -134,6 +144,11 @@ class ViewController: UIViewController {
                 }
             }
             let setResult: Dictionary<String, Bool> = verifyEqualityOnProperties(cardProperties: cardProperties)
+            var countEqualities = 0
+            for (_,value) in setResult {
+                countEqualities += (value) ? 1 : 0
+            }
+            return (countEqualities > 2 || countEqualities == 0) ? true : false
         }
         return false
     }
@@ -146,6 +161,22 @@ class ViewController: UIViewController {
             "number" : allEqualUsingContains(array: cardProperties["number"] as! [Int]),
             "symbol" : allEqualUsingContains(array: cardProperties["number"] as! [String]),
         ]
+    }
+    
+    private func selectCardAnimation(at index: Int) {
+        if let setGame = self.setCardGame {
+            let cards = setGame.playingCards
+            let card = cards[index]
+            if(card.isSelected) {
+                cardButtons[index].layer.borderWidth = 3.0
+                cardButtons[index].layer.cornerRadius = 3.0
+                cardButtons[index].layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+            } else {
+                cardButtons[index].layer.borderWidth = 0.0
+                cardButtons[index].layer.cornerRadius = 0.0
+                cardButtons[index].layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+            }
+        }
     }
 }
 

@@ -8,9 +8,9 @@
 
 import Foundation
 
-public struct Card {
+public struct Card: Equatable {
     
-    private var uuid: String
+    private(set) var uuid: String
     public var isFaceUp: Bool
     public var symbol: Symbol?
     public var shade: Shade?
@@ -58,5 +58,9 @@ public struct Card {
         self.number = number;
         self.color = color;
         self.isSelected = false
+    }
+    
+    public static func == (lhs: Card, rhs: Card) -> Bool {
+        return lhs.uuid == rhs.uuid
     }
 }
