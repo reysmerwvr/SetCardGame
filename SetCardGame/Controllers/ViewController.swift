@@ -34,7 +34,9 @@ class ViewController: UIViewController {
                 setGame.selectCard(at: cardNumber)
                 let selectedCards = setGame.selectedCards
                 if(selectedCards.count == 3) {
-                    verifySet(cards: selectedCards)
+                    if(verifySet(cards: selectedCards)) {
+                        setGame.markCardAsSet()
+                    }
                 } else {
                     selectCardAnimation(at: cardNumber)
                 }

@@ -13,12 +13,13 @@ struct SetCardGame {
     private var deck: Deck?
     private(set) var playingCards: [Card] = [Card]()
     private(set) var selectedCards: [Card] = [Card]()
+    private(set) var setCards: [Card] = [Card]()
     
     init(numberOfCards: Int) {
         assert(numberOfCards >= 12, "SetCardGame.init(at: \(numberOfCards)): you must at least twelve cards")
-        self.deck = Deck()
+        deck = Deck()
         for _ in 0..<numberOfCards {
-            if let card = self.deck?.draw() {
+            if let card = deck?.draw() {
                 playingCards += [card]
             }
         }
@@ -37,5 +38,17 @@ struct SetCardGame {
             selectedCards = selectedCards.filter({(selectedCard: Card) -> Bool in return selectedCard != card})
         }
         playingCards[index] = card
+    }
+    
+    mutating public func markCardAsSet() -> Void {
+        for card in selectedCards {
+            setCards.append(card)
+            if let indexOfCard = playingCards.firstIndex(where: { $0 == card }) {
+                if let newCard = deck?.draw() {
+                    playingCards[indexOfCard] = newCard
+                }
+            }
+        }
+        selectedCards.removeAll()
     }
 }

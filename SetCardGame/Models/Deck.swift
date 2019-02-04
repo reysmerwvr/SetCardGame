@@ -28,11 +28,7 @@ public struct Deck {
     }
     
     mutating public func draw() -> Card? {
-        if cards.count > 0 {
-            return cards.remove(at: cards.count.arc4random)
-        } else {
-            return nil
-        }
+        return cards.count > 0 ? cards.remove(at: cards.count.arc4random) : nil
     }
 }
 
