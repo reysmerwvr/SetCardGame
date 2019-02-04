@@ -44,7 +44,8 @@ struct SetCardGame {
         for card in selectedCards {
             setCards.append(card)
             if let indexOfCard = playingCards.firstIndex(where: { $0 == card }) {
-                if let newCard = deck?.draw() {
+                if var newCard = deck?.draw() {
+                    newCard.isFaceUp = true
                     playingCards[indexOfCard] = newCard
                 }
             }

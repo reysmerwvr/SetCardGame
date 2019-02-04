@@ -22,20 +22,28 @@ class ViewController: UIViewController {
         return cardButtons.count
     }
     
+    private(set) var setCount: Int = 0 {
+        didSet {
+            scoreCountLabel.text = "Sets: \(setCount)"
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setCardGame = SetCardGame(numberOfCards: numberOfCards)
-        drawInitialButtons()
+        setCardGame = SetCardGame(numberOfCards: numberOfCards)
+        drawCardsInButtons()
     }
     
     @IBAction private func onTouchCard(_ sender: UIButton) {
         if let cardNumber = cardButtons.index(of: sender) {
-            if var setGame = self.setCardGame {
+            if var setGame = setCardGame {
                 setGame.selectCard(at: cardNumber)
                 let selectedCards = setGame.selectedCards
                 if(selectedCards.count == 3) {
                     if(verifySet(cards: selectedCards)) {
                         setGame.markCardAsSet()
+                        drawCardsInButtons()
+                        setCount += 1
                     }
                 } else {
                     selectCardAnimation(at: cardNumber)
@@ -45,9 +53,15 @@ class ViewController: UIViewController {
         }
     }
     
-    private func drawInitialButtons() {
+    @IBAction func setNewGame(_ sender: UIButton) {
+        setCardGame = SetCardGame(numberOfCards: numberOfCards)
+        setCount = 0
+        drawCardsInButtons()
+    }
+    
+    private func drawCardsInButtons() {
         for index in cardButtons.indices {
-            if let setGame = self.setCardGame {
+            if let setGame = setCardGame {
                 let cards = setGame.playingCards
                 let card = cards[index]
                 if(card.isFaceUp) {
@@ -166,7 +180,7 @@ class ViewController: UIViewController {
     }
     
     private func selectCardAnimation(at index: Int) {
-        if let setGame = self.setCardGame {
+        if let setGame = setCardGame {
             let cards = setGame.playingCards
             let card = cards[index]
             if(card.isSelected) {
