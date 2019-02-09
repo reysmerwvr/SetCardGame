@@ -53,6 +53,15 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func findSet(_ sender: UIButton) {
+        for index in cardButtons.indices {
+            if let setGame = setCardGame {
+                let cards = setGame.playingCards
+                let card = cards[index]
+            }
+        }
+    }
+    
     @IBAction func setNewGame(_ sender: UIButton) {
         setCardGame = SetCardGame(numberOfCards: numberOfCards)
         setCount = 0

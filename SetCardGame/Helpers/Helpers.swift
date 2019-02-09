@@ -50,3 +50,26 @@ func allEqualUsingContains<T : Equatable>(array : [T]) -> Bool {
     }
     return true
 }
+
+func getCardsArrayCombinations(arrayOfCards: [Card], k: Int)
+    -> Array<Array<Card>> {
+    var arrayOfCardsCopy = arrayOfCards
+    var combinationsArray: Array<Array<Card>> = [[]]
+    var auxArray: Array<Array<Card>> = [[]]
+    var next: Array<Card> = []
+    for (index, value) in arrayOfCardsCopy.enumerated() {
+        if(k == 1) {
+            combinationsArray.append([value])
+        } else {
+            arrayOfCardsCopy.remove(at: index  + 1)
+            auxArray = getCardsArrayCombinations(arrayOfCards: arrayOfCardsCopy,
+                                                 k: k-1);
+            for (_, value1) in auxArray.enumerated() {
+                next = value1
+                next.insert(value, at: 0)
+                combinationsArray.append(next);
+            }
+        }
+    }
+    return combinationsArray
+}
