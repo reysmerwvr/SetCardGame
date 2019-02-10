@@ -57,16 +57,16 @@ func getCardsArrayCombinations(arrayOfCards: [Card], k: Int)
     var combinationsArray: Array<Array<Card>> = [[]]
     var auxArray: Array<Array<Card>> = [[]]
     var next: Array<Card> = []
-    for (index, value) in arrayOfCardsCopy.enumerated() {
+    for (index, card) in arrayOfCardsCopy.enumerated() {
         if(k == 1) {
-            combinationsArray.append([value])
+            combinationsArray.append([card])
         } else {
             arrayOfCardsCopy.remove(at: index  + 1)
             auxArray = getCardsArrayCombinations(arrayOfCards: arrayOfCardsCopy,
                                                  k: k-1);
-            for (_, value1) in auxArray.enumerated() {
-                next = value1
-                next.insert(value, at: 0)
+            for (_, cardObject) in auxArray.enumerated() {
+                next = cardObject
+                next.insert(card, at: 0)
                 combinationsArray.append(next);
             }
         }

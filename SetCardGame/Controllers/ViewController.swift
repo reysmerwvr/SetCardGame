@@ -54,10 +54,24 @@ class ViewController: UIViewController {
     }
     
     @IBAction func findSet(_ sender: UIButton) {
-        for index in cardButtons.indices {
-            if let setGame = setCardGame {
-                let cards = setGame.playingCards
-                let card = cards[index]
+        if let setGame = setCardGame {
+            let cards = setGame.playingCards
+            let cardsCombinationsArray = getCardsArrayCombinations(arrayOfCards: cards, k: 3)
+            var auxArrayOfCards: [Card] = []
+            for arrayOfCards in cardsCombinationsArray {
+                if verifySet(cards: arrayOfCards) {
+                    auxArrayOfCards = arrayOfCards
+                    break
+                }
+            }
+            if auxArrayOfCards.count > 0 {
+                for index in cardButtons.indices {
+                    let card = cards[index]
+                    let arrayhasCard = auxArrayOfCards.contains { $0 == card }
+                    if arrayhasCard {
+                        selectCardAnimation(at: index)
+                    }
+                }
             }
         }
     }
