@@ -56,7 +56,8 @@ class ViewController: UIViewController {
     @IBAction func findSet(_ sender: UIButton) {
         if let setGame = setCardGame {
             let cards = setGame.playingCards
-            let cardsCombinationsArray = getCardsArrayCombinations(arrayOfCards: cards, k: 3)
+            let activeCards = cards.filter { $0.isFaceUp }
+            let cardsCombinationsArray = combinations(array: activeCards, size: 3)
             var auxArrayOfCards: [Card] = []
             for arrayOfCards in cardsCombinationsArray {
                 if verifySet(cards: arrayOfCards) {
@@ -69,7 +70,9 @@ class ViewController: UIViewController {
                     let card = cards[index]
                     let arrayhasCard = auxArrayOfCards.contains { $0 == card }
                     if arrayhasCard {
-                        selectCardAnimation(at: index)
+                        cardButtons[index].layer.borderWidth = 3.0
+                        cardButtons[index].layer.cornerRadius = 3.0
+                        cardButtons[index].layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
                     }
                 }
             }
@@ -166,19 +169,19 @@ class ViewController: UIViewController {
             for index in cards.indices {
                 let card = cards[index]
                 if let cardColor = card.color {
-                   cardProperties["color"] = cardProperties.append(element: cardColor,
+                   cardProperties["color"] = cardProperties.append(element: String(cardColor.rawValue),
                                          key: "color")
                 }
                 if let cardShade = card.shade {
-                    cardProperties["shade"] = cardProperties.append(element: cardShade,
+                    cardProperties["shade"] = cardProperties.append(element: String(cardShade.rawValue),
                                           key: "shade")
                 }
                 if let cardNumber = card.number {
-                    cardProperties["number"] = cardProperties.append(element: cardNumber,
+                    cardProperties["number"] = cardProperties.append(element: String(cardNumber.rawValue),
                                           key: "number")
                 }
                 if let cardSymbol = card.symbol {
-                    cardProperties["symbol"] = cardProperties.append(element: cardSymbol,
+                    cardProperties["symbol"] = cardProperties.append(element: String(cardSymbol.rawValue),
                                           key: "symbol")
                 }
             }
@@ -194,12 +197,20 @@ class ViewController: UIViewController {
     
     private func verifyEqualityOnProperties(cardProperties: Dictionary<String,
         Array<Any>>) -> Dictionary<String, Bool> {
-        return [
-            "color" : allEqualUsingContains(array: cardProperties["color"] as! [String]),
-            "shade" : allEqualUsingContains(array: cardProperties["shade"] as! [String]),
-            "number" : allEqualUsingContains(array: cardProperties["number"] as! [Int]),
-            "symbol" : allEqualUsingContains(array: cardProperties["number"] as! [String]),
-        ]
+        var arrayOfEqualityOfProperties: Dictionary<String, Bool> = [:]
+        if let colorArray = cardProperties["color"] {
+            arrayOfEqualityOfProperties["color"] = allEqualUsingContains(array: colorArray as! [String])
+        }
+        if let shadeArray = cardProperties["shade"] {
+            arrayOfEqualityOfProperties["shade"] = allEqualUsingContains(array: shadeArray as! [String])
+        }
+        if let numberArray = cardProperties["number"] {
+            arrayOfEqualityOfProperties["number"] = allEqualUsingContains(array: numberArray as! [String])
+        }
+        if let symbolArray = cardProperties["symbol"] {
+            arrayOfEqualityOfProperties["symbol"] = allEqualUsingContains(array: symbolArray as! [String])
+        }
+        return arrayOfEqualityOfProperties
     }
     
     private func selectCardAnimation(at index: Int) {
