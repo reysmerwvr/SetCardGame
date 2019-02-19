@@ -53,6 +53,22 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func openCards(_ sender: UIButton) {
+        if let setGame = setCardGame {
+            var cards = setGame.playingCards
+            let inactiveCards = cards.filter { !$0.isFaceUp }
+            if inactiveCards.count > 3 {
+                for index in 0..<3 {
+                    let card = inactiveCards[index]
+                    if let cardIndex = cards.firstIndex(where: { $0 == card }) {
+                        cards[cardIndex].isFaceUp = true
+                    }
+                }
+                drawCardsInButtons()
+            }
+        }
+    }
+    
     @IBAction func findSet(_ sender: UIButton) {
         if let setGame = setCardGame {
             let cards = setGame.playingCards
@@ -72,7 +88,7 @@ class ViewController: UIViewController {
                     if arrayhasCard {
                         cardButtons[index].layer.borderWidth = 3.0
                         cardButtons[index].layer.cornerRadius = 3.0
-                        cardButtons[index].layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
+                        cardButtons[index].layer.borderColor = #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1)
                     }
                 }
             }
