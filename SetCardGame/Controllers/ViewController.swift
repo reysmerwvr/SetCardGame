@@ -86,9 +86,8 @@ class ViewController: UIViewController {
                     let card = cards[index]
                     let arrayhasCard = auxArrayOfCards.contains { $0 == card }
                     if arrayhasCard {
-                        cardButtons[index].layer.borderWidth = 3.0
-                        cardButtons[index].layer.cornerRadius = 3.0
-                        cardButtons[index].layer.borderColor = #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1)
+                        setCardAnimation(button: cardButtons[index], borderWidth: 3.0,
+                                         cornerRadius: 3.0, borderColor: #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1))
                     }
                 }
             }
@@ -106,16 +105,19 @@ class ViewController: UIViewController {
             if let setGame = setCardGame {
                 let cards = setGame.playingCards
                 let card = cards[index]
+                let button = cardButtons[index]
                 if(card.isFaceUp) {
                     let attributes = getCardShadeAttributes(card: card)
                     let textContent = getCardTextContent(card: card)
                     let attributedString = NSAttributedString(
                         string: textContent, attributes: attributes)
-                    cardButtons[index].setAttributedTitle(attributedString, for: UIControl.State.normal)
+                    button.setAttributedTitle(attributedString, for: UIControl.State.normal)
                 } else {
-                    cardButtons[index].backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                    cardButtons[index].isUserInteractionEnabled = false
+                    button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                    button.isUserInteractionEnabled = false
                 }
+                setCardAnimation(button: button, borderWidth: 0.0,
+                                 cornerRadius: 0.0, borderColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))
             }
         }
     }
@@ -233,16 +235,22 @@ class ViewController: UIViewController {
         if let setGame = setCardGame {
             let cards = setGame.playingCards
             let card = cards[index]
+            let button = cardButtons[index]
             if(card.isSelected) {
-                cardButtons[index].layer.borderWidth = 3.0
-                cardButtons[index].layer.cornerRadius = 3.0
-                cardButtons[index].layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+                setCardAnimation(button: button, borderWidth: 3.0,
+                                 cornerRadius: 3.0, borderColor: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1))
             } else {
-                cardButtons[index].layer.borderWidth = 0.0
-                cardButtons[index].layer.cornerRadius = 0.0
-                cardButtons[index].layer.borderColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+                setCardAnimation(button: button, borderWidth: 0.0,
+                                 cornerRadius: 0.0, borderColor: #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))
             }
         }
+    }
+    
+    private func setCardAnimation(button: UIButton, borderWidth: CGFloat,
+                                  cornerRadius: CGFloat, borderColor: CGColor) {
+        button.layer.borderWidth = borderWidth
+        button.layer.cornerRadius = cornerRadius
+        button.layer.borderColor = borderColor
     }
 }
 
