@@ -203,30 +203,44 @@ class ViewController: UIViewController {
                                           key: "symbol")
                 }
             }
-            let setResult: Dictionary<String, Bool> = verifyEqualityOnProperties(cardProperties: cardProperties)
-            var countEqualities = 0
+            let setResult: Dictionary<String, Int> = verifyEqualityOnProperties(cardProperties: cardProperties)
+            var countEqualities: Dictionary<Int, Int> = [:]
             for (_,value) in setResult {
-                countEqualities += (value) ? 1 : 0
+                if let element = countEqualities[value] {
+                    countEqualities[value] = element + 1
+                } else {
+                    countEqualities[value] = 1
+                }
             }
-            return (countEqualities > 2 || countEqualities == 0) ? true : false
+            if let one = countEqualities[1], one >= 4 {
+                return true
+            } else if let three = countEqualities[3], let one = countEqualities[1],
+                three == 3, one == 1  {
+                return true
+            } else if let three = countEqualities[3], let one = countEqualities[1],
+                three == 2, one == 2  {
+                return true
+            } else {
+                return false
+            }
         }
         return false
     }
     
     private func verifyEqualityOnProperties(cardProperties: Dictionary<String,
-        Array<Any>>) -> Dictionary<String, Bool> {
-        var arrayOfEqualityOfProperties: Dictionary<String, Bool> = [:]
+        Array<Any>>) -> Dictionary<String, Int> {
+        var arrayOfEqualityOfProperties: Dictionary<String, Int> = [:]
         if let colorArray = cardProperties["color"] {
-            arrayOfEqualityOfProperties["color"] = allEqualUsingContains(array: colorArray as! [String])
+            arrayOfEqualityOfProperties["color"] = countEqualities(propertyArray: colorArray as! [String])
         }
         if let shadeArray = cardProperties["shade"] {
-            arrayOfEqualityOfProperties["shade"] = allEqualUsingContains(array: shadeArray as! [String])
+            arrayOfEqualityOfProperties["shade"] = countEqualities(propertyArray: shadeArray as! [String])
         }
         if let numberArray = cardProperties["number"] {
-            arrayOfEqualityOfProperties["number"] = allEqualUsingContains(array: numberArray as! [String])
+            arrayOfEqualityOfProperties["number"] = countEqualities(propertyArray: numberArray as! [String])
         }
         if let symbolArray = cardProperties["symbol"] {
-            arrayOfEqualityOfProperties["symbol"] = allEqualUsingContains(array: symbolArray as! [String])
+            arrayOfEqualityOfProperties["symbol"] = countEqualities(propertyArray: symbolArray as! [String])
         }
         return arrayOfEqualityOfProperties
     }

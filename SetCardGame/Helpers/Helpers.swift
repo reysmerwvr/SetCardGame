@@ -51,6 +51,26 @@ func allEqualUsingContains<T : Equatable>(array : [T]) -> Bool {
     return true
 }
 
+func countEqualities(propertyArray : [String]) -> Int {
+    var repeatedElements: Dictionary<String, Int> = [:]
+    if propertyArray.count > 0 {
+        for value in propertyArray {
+            if let element = repeatedElements[value] {
+                repeatedElements[value] = element + 1
+            } else {
+                repeatedElements[value] = 1
+            }
+        }
+    }
+    var equalities = 1
+    for (_,value) in repeatedElements {
+        if value > equalities {
+            equalities = value
+        }
+    }
+    return equalities
+}
+
 func combinations<T>(array:[T], size:Int) -> [[T]] {
     if(size > array.count || size == 0 || array.count == 0) {
         return [];
