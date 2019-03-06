@@ -24,7 +24,7 @@ class ViewController: UIViewController {
     
     private(set) var setCount: Int = 0 {
         didSet {
-            scoreCountLabel.text = "Sets: \(setCount)"
+            setCountLabel.text = "Sets: \(setCount)"
         }
     }
     
@@ -38,32 +38,38 @@ class ViewController: UIViewController {
         if let cardNumber = cardButtons.index(of: sender) {
             if var setGame = setCardGame {
                 setGame.selectCard(at: cardNumber)
+                setCardGame = setGame
                 let selectedCards = setGame.selectedCards
                 if(selectedCards.count == 3) {
                     if(verifySet(cards: selectedCards)) {
                         setGame.markCardAsSet()
-                        drawCardsInButtons()
+                        setCardGame = setGame
                         setCount += 1
+                    } else {
+                        setGame.unSelectCards()
+                        setCardGame = setGame
                     }
+                    drawCardsInButtons()
                 } else {
                     selectCardAnimation(at: cardNumber)
                 }
-                
             }
         }
     }
     
     @IBAction func openCards(_ sender: UIButton) {
-        if let setGame = setCardGame {
+        if var setGame = setCardGame {
             var cards = setGame.playingCards
             let inactiveCards = cards.filter { !$0.isFaceUp }
-            if inactiveCards.count > 3 {
+            if inactiveCards.count >= 3 {
                 for index in 0..<3 {
                     let card = inactiveCards[index]
                     if let cardIndex = cards.firstIndex(where: { $0 == card }) {
                         cards[cardIndex].isFaceUp = true
                     }
                 }
+                setGame._playingCards = cards
+                setCardGame = setGame
                 drawCardsInButtons()
             }
         }
@@ -87,7 +93,7 @@ class ViewController: UIViewController {
                     let arrayhasCard = auxArrayOfCards.contains { $0 == card }
                     if arrayhasCard {
                         setCardAnimation(button: cardButtons[index], borderWidth: 3.0,
-                                         cornerRadius: 3.0, borderColor: #colorLiteral(red: 0.05882352963, green: 0.180392161, blue: 0.2470588237, alpha: 1))
+                                         cornerRadius: 3.0, borderColor: #colorLiteral(red: 0.3098039329, green: 0.01568627544, blue: 0.1294117719, alpha: 1))
                     }
                 }
             }
@@ -107,13 +113,16 @@ class ViewController: UIViewController {
                 let card = cards[index]
                 let button = cardButtons[index]
                 if(card.isFaceUp) {
+                    button.backgroundColor = #colorLiteral(red: 0.8017306924, green: 0.8017306924, blue: 0.8017306924, alpha: 1)
                     let attributes = getCardShadeAttributes(card: card)
                     let textContent = getCardTextContent(card: card)
                     let attributedString = NSAttributedString(
                         string: textContent, attributes: attributes)
                     button.setAttributedTitle(attributedString, for: UIControl.State.normal)
+                    button.isUserInteractionEnabled = true
                 } else {
                     button.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+                    button.setAttributedTitle(nil, for: UIControl.State.normal)
                     button.isUserInteractionEnabled = false
                 }
                 setCardAnimation(button: button, borderWidth: 0.0,
