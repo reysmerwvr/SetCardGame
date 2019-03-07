@@ -10,7 +10,7 @@ import Foundation
 
 struct SetCardGame {
     
-    private var deck: Deck?
+    private(set) var deck: Deck?
     private(set) var playingCards: [Card] = [Card]()
     private(set) var selectedCards: [Card] = [Card]()
     private(set) var setCards: [Card] = [Card]()
