@@ -61,9 +61,12 @@ struct SetCardGame {
         for card in selectedCards {
             setCards.append(card)
             if let indexOfCard = playingCards.firstIndex(where: { $0 == card }) {
+                playingCards[indexOfCard].isSetted = true
                 if var newCard = deck?.draw() {
                     newCard.isFaceUp = true
                     playingCards[indexOfCard] = newCard
+                } else {
+                    playingCards[indexOfCard].isFaceUp = false
                 }
             }
         }

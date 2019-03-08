@@ -71,20 +71,18 @@ class ViewController: UIViewController {
     
     @IBAction func openCards(_ sender: UIButton) {
         if var setGame = setCardGame, let deck = setGame.deck  {
-            if deck.cards.count >= 3 {
-                var cards = setGame.playingCards
-                let inactiveCards = cards.filter { !$0.isFaceUp }
-                if inactiveCards.count >= 3 {
-                    for index in 0..<3 {
-                        let card = inactiveCards[index]
-                        if let cardIndex = cards.firstIndex(where: { $0 == card }) {
-                            cards[cardIndex].isFaceUp = true
-                        }
+            var cards = setGame.playingCards
+            let inactiveCards = cards.filter { !$0.isFaceUp && !$0.isSetted }
+            if deck.cards.count >= 3 || inactiveCards.count >= 3 {
+                for index in 0..<3 {
+                    let card = inactiveCards[index]
+                    if let cardIndex = cards.firstIndex(where: { $0 == card }) {
+                        cards[cardIndex].isFaceUp = true
                     }
-                    setGame._playingCards = cards
-                    setCardGame = setGame
-                    drawCardsInButtons()
                 }
+                setGame._playingCards = cards
+                setCardGame = setGame
+                drawCardsInButtons()
             } else {
                 sender.isUserInteractionEnabled = false
             }
@@ -119,6 +117,7 @@ class ViewController: UIViewController {
     @IBAction func setNewGame(_ sender: UIButton) {
         setCardGame = SetCardGame(numberOfCards: numberOfCards)
         setCount = 0
+        scoreCount = 0
         drawCardsInButtons()
     }
     

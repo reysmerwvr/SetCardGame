@@ -17,6 +17,7 @@ public struct Card: Equatable {
     public var number: Number?
     public var color: Color?
     public var isSelected: Bool
+    public var isSetted: Bool
     
     public enum Symbol: String {
         case triangle = "▲"
@@ -58,6 +59,7 @@ public struct Card: Equatable {
         self.number = number;
         self.color = color;
         self.isSelected = false
+        self.isSetted = false
     }
     
     public static func == (lhs: Card, rhs: Card) -> Bool {
