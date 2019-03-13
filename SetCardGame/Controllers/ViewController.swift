@@ -73,16 +73,22 @@ class ViewController: UIViewController {
         if var setGame = setCardGame, let deck = setGame.deck  {
             var cards = setGame.playingCards
             let inactiveCards = cards.filter { !$0.isFaceUp && !$0.isSetted }
-            if deck.cards.count >= 3 || inactiveCards.count >= 3 {
-                for index in 0..<3 {
-                    let card = inactiveCards[index]
-                    if let cardIndex = cards.firstIndex(where: { $0 == card }) {
-                        cards[cardIndex].isFaceUp = true
+            let inactiveCardsCount = inactiveCards.count
+            if deck.cards.count >= 3 || inactiveCardsCount >= 3 {
+                if inactiveCardsCount > 0 {
+                    for index in 0..<3 {
+                        let card = inactiveCards[index]
+                        if let cardIndex = cards.firstIndex(where: { $0 == card }) {
+                            cards[cardIndex].isFaceUp = true
+                        }
                     }
+                    setGame._playingCards = cards
+                    setCardGame = setGame
+                    drawCardsInButtons()
+                    sender.isUserInteractionEnabled = true
+                } else {
+                    sender.isUserInteractionEnabled = false
                 }
-                setGame._playingCards = cards
-                setCardGame = setGame
-                drawCardsInButtons()
             } else {
                 sender.isUserInteractionEnabled = false
             }
